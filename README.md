@@ -34,3 +34,45 @@ Optional (for local Python runs):
 ```bash
 git clone https://github.com/zubayer16/thesis-ecophi-zubayer.git
 cd power-quality-segmentation_Fault
+```
+
+
+## 2. 🚀 Run the Pipeline (Recommended)
+To launch the full pipeline (build + run):
+```bash
+.\docker_build_run.bat
+```
+
+This script:
+
+- Checks Docker/NVIDIA status
+- Creates necessary directories
+- Prompts for running options:
+```bash
+  Choose running option:
+1) Build and run with GPU support
+2) Build and run without GPU support
+3) Run with Docker Compose
+4) Just build the image
+```
+Choose based on your system (e.g., 1 for GPU, 2 for CPU)
+
+## 3. Access the Application
+After successful startup, open your browser at:
+```bash
+http://localhost:8000
+```
+
+## 📁 Project Structure
+
+| Path                     | Description                                  |
+| ------------------------ | -------------------------------------------- |
+| `app.py` / `fast_api.py` | FastAPI server entry points                  |
+| `static/`                | HTML/CSS/JS files for frontend               |
+| `models/`                | Trained model weights                        |
+| `data/`                  | Segmentation input and label files           |
+| `outputs/` / `logs/`     | Output predictions and log files             |
+| `docker_build_run.bat`   | 🚀 Main script to build and run the pipeline |
+| `Dockerfile`             | Docker build script                          |
+| `docker-compose.yml`     | Docker Compose setup (if used)               |
+
