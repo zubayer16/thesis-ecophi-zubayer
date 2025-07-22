@@ -63,6 +63,15 @@ After successful startup, open your browser at:
 http://localhost:8000
 ```
 
+## Training Setup Overview
+The training process runs for approximately 10 minutes (CPU), utilizing a GRU (Gated Recurrent Unit) combined with an Attention mechanism. The model is trained sequentially on individual phases of the data, allowing it to capture temporal dependencies and focus on the most relevant parts of the sequence for each phase. The following steps are performed while training
+
+- STEP 1: INITIALIZING TimeSeriesSegmentation CLASS
+- STEP 2: PREPARING DATA (LOAD & PREPROCESS)
+- STEP 3: PREPARING TRAINING DATA (SPLIT & SEQUENCE)
+- STEP 4: MODEL INITIALIZATION
+- SEQUENTIAL TRAINING - VOLTAGE & CURRENT PHASES
+
 ## 📁 Project Structure
 
 | Path                     | Description                                  |
