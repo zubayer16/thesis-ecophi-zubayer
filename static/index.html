@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Series Segmentation Visualization</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-wave-square logo-icon"></i>
+                    <h1 class="app-title">Time Series Segmentation</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="healthCheck" class="btn btn-outline">
+                        <i class="fas fa-heartbeat"></i>
+                        Health Check
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-grid">
+                <!-- Controls Panel -->
+                <aside class="controls-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-sliders-h"></i> Configuration</h2>
+                    </div>
+                    
+                    <div class="control-section">
+                        <div class="control-group">
+                            <label for="phaseType" class="control-label">
+                                <i class="fas fa-bolt"></i> Phase Type
+                            </label>
+                            <select id="phaseType" class="control-input">
+                                <option value="voltage">Voltage</option>
+                                <option value="current">Current</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="phaseNum" class="control-label">
+                                <i class="fas fa-layer-group"></i> Phase Number
+                            </label>
+                            <select id="phaseNum" class="control-input">
+                                <option value="1">Phase 1</option>
+                                <option value="2">Phase 2</option>
+                                <option value="3">Phase 3</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="numSamples" class="control-label">
+                                <i class="fas fa-chart-line"></i> Number of Samples
+                            </label>
+                            <input type="number" id="numSamples" class="control-input" value="50" min="10" max="500">
+                            <div class="input-hint">10-500 samples</div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="plotType" class="control-label">
+                                <i class="fas fa-chart-area"></i> Visualization Type
+                            </label>
+                            <select id="plotType" class="control-input">
+                                <option value="comparison">Comparison Dashboard</option>
+                                <option value="time_series">Time Series View</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="generateBtn" class="btn btn-primary" onclick="generateVisualization()">
+                            <i class="fas fa-play"></i>
+                            Generate Visualization
+                        </button>
+                        <button id="downloadBtn" class="btn btn-secondary" onclick="downloadResults()" disabled>
+                            <i class="fas fa-download"></i>
+                            Download Results
+                        </button>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div id="quickStats" class="quick-stats" style="display: none;">
+                        <h3><i class="fas fa-tachometer-alt"></i> Quick Stats</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Inference Time:</span>
+                            <span id="inferenceTime" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Throughput:</span>
+                            <span id="throughput" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Device:</span>
+                            <span id="device" class="stat-value">-</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Visualization Area -->
+                <section class="visualization-area">
+                    <!-- Loading State -->
+                    <div id="loadingState" class="loading-state" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Generating visualization...</p>
+                        <div class="loading-progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="errorState" class="error-state" style="display: none;">
+                        <i class="fas fa-exclamation-triangle error-icon"></i>
+                        <h3>Something went wrong</h3>
+                        <p id="errorMessage" class="error-message"></p>
+                        <button class="btn btn-outline" onclick="generateVisualization()">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Ready to Visualize</h3>
+                        <p>Configure your parameters and click "Generate Visualization" to see your time series segmentation results.</p>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Real-time model inference</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Interactive visualizations</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Performance monitoring</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Area -->
+                    <div id="resultsArea" class="results-area" style="display: none;">
+                        <div class="results-header">
+                            <h2 id="resultsTitle">Visualization Results</h2>
+                            <div class="results-actions">
+                                <button class="btn btn-outline btn-sm" onclick="toggleFullscreen()">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="plot-container">
+                            <img id="plotImage" src="" alt="Visualization Plot" class="plot-image">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Metrics Panel -->
+            <section id="metricsPanel" class="metrics-panel" style="display: none;">
+                <div class="panel-header">
+                    <h2><i class="fas fa-analytics"></i> Performance Metrics</h2>
+                    <button class="btn btn-ghost btn-sm" onclick="toggleMetrics()">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                
+                <div class="metrics-content">
+                    <div class="metrics-grid">
+                        <!-- Performance Metrics -->
+                        <div class="metric-card performance-metrics">
+                            <h3><i class="fas fa-stopwatch"></i> Performance</h3>
+                            <div class="metric-row">
+                                <span class="metric-label">Total Inference Time:</span>
+                                <span id="totalInferenceTime" class="metric-value">-</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Per Sample:</span>
+                                <span id="perSampleTime" class="metric-value">-</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Samples/Second:</span>
+                                <span id="samplesPerSecond" class="metric-value">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Hardware Info -->
+                        <div class="metric-card hardware-info">
+                            <h3><i class="fas fa-microchip"></i> Hardware</h3>
+                            <div id="hardwareDetails" class="hardware-details">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Model Info -->
+                        <div class="metric-card model-info">
+                            <h3><i class="fas fa-brain"></i> Model</h3>
+                            <div class="metric-row">
+                                <span class="metric-label">Phase Type:</span>
+                                <span id="modelPhaseType" class="metric-value">-</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Phase Number:</span>
+                                <span id="modelPhaseNum" class="metric-value">-</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Samples Processed:</span>
+                                <span id="modelSamples" class="metric-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Time Series Segmentation Visualization Tool</p>
+                <div class="footer-links">
+                    <a href="#" onclick="showHelp()">Help</a>
+                    <a href="#" onclick="showAbout()">About</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="helpModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Help & Documentation</h2>
+                <button class="modal-close" onclick="closeModal('helpModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Getting Started</h3>
+                <p>This tool allows you to visualize time series segmentation model predictions.</p>
+                
+                <h3>Configuration Options</h3>
+                <ul>
+                    <li><strong>Phase Type:</strong> Choose between voltage or current analysis</li>
+                    <li><strong>Phase Number:</strong> Select which phase (1-3) to analyze</li>
+                    <li><strong>Number of Samples:</strong> Set how many samples to process (10-500)</li>
+                    <li><strong>Visualization Type:</strong> Choose between comparison dashboard or detailed time series view</li>
+                </ul>
+                
+                <h3>Understanding the Results</h3>
+                <p>The visualizations show predicted vs actual segmentation boundaries, helping you evaluate model performance.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

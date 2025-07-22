@@ -1,0 +1,77 @@
+# Git files
+.git
+.gitignore
+README.md
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter notebooks
+.ipynb_checkpoints
+
+# Large data files (exclude from image, mount as volumes instead)
+data/segmentation_data/
+data/segmentation_labels/
+models/*.pth
+models/*.pt
+models/*.pkl
+checkpoints/*.pth
+checkpoints/*.pt
+*.h5
+*.hdf5
+
+# Logs and outputs
+logs/
+outputs/
+*.log
+
+# Docker files (don't copy into image)
+Dockerfile
+docker-compose.yml
+.dockerignore

@@ -1,0 +1,54 @@
+# --------------------
+# Python
+# --------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pkl
+*.egg
+*.egg-info/
+dist/
+build/
+
+# --------------------
+# Jupyter Notebook
+# --------------------
+.ipynb_checkpoints/
+
+# --------------------
+# Data and Outputs
+# --------------------
+logs/
+outputs/
+training_data.pkl
+
+# --------------------
+# Environments
+# --------------------
+.env
+.venv/
+*.env
+
+# --------------------
+# VS Code settings
+# --------------------
+.vscode/
+
+# --------------------
+# Docker
+# --------------------
+*.pid
+*.log
+docker_build_run.bat
+
+# --------------------
+# Node.js (static files - optional)
+# --------------------
+node_modules/
+static/*.log
+
+# --------------------
+# System files
+# --------------------
+.DS_Store
+Thumbs.db

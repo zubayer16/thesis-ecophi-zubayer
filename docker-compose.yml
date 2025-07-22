@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  time-series-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ts-segmentation-pipeline
+    
+    # GPU support (uncomment if you have NVIDIA GPU)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    
+    volumes:
+      # Mount data directories based on your structure
+      - ./data/segmentation_data:/app/data/segmentation_data:ro
+      - ./data/segmentation_labels:/app/data/segmentation_labels:ro
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+      - ./checkpoints:/app/checkpoints
+      - ./logs:/app/logs
+    
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CUDA_VISIBLE_DEVICES=0
+      # Add any other environment variables your pipeline needs
+      - BATCH_SIZE=16
+      - HIDDEN_DIM=64
+      - NUM_LAYERS=3
+      - DROPOUT_RATE=0.1
+      - SEED=42
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Optional: expose ports if you add monitoring/web interface
+    # ports:
+    #   - "8080:8080"
+    
+    # Optional: limit resources
+    # mem_limit: 8g
+    # cpus: 4.0
+
+  # Optional: Add TensorBoard service for monitoring
+  tensorboard:
+    image: tensorflow/tensorflow:latest
+    container_name: ts-tensorboard
+    command: tensorboard --logdir=/logs --host=0.0.0.0 --port=6006
+    ports:
+      - "6006:6006"
+    volumes:
+      - ./logs:/logs:ro
+    depends_on:
+      - time-series-pipeline
