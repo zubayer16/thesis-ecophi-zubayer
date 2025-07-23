@@ -65,7 +65,7 @@ The frontend of the Power Quality Segmentation Pipeline provides an intuitive, i
 ```bash
 http://localhost:8000
 ```
-![UI Screenshot](images/ui_dashboard.png)
+![UI Screenshot](ui.png)
 ## 🔧 Configuration Panel (Left Sidebar)
 The configuration panel lets you customize your visualization and analysis:
 
@@ -109,4 +109,16 @@ The training process runs for approximately 10 minutes (CPU), utilizing a GRU (G
 | `docker_build_run.bat`   | 🚀 Main script to build and run the pipeline |
 | `Dockerfile`             | Docker build script                          |
 | `docker-compose.yml`     | Docker Compose setup (if used)               |
+
+
+## 📓 Model Notebooks
+
+This project includes several Jupyter notebooks exploring different deep learning models for power quality segmentation:
+
+| Notebook                          | Model Type            | Description                                                                 |
+| --------------------------------- | --------------------- | --------------------------------------------------------------------------- |
+| `thesis-transformer.ipynb`        | Transformer           | Implements a Transformer-based sequence model for time-series segmentation. |
+| `thesis-fast-rcnn.ipynb`         | Fast R-CNN (v1)       | First version of Fast R-CNN adapted for temporal event detection.           |
+| `thesis-fast-rcnn-v2.ipynb`      | Fast R-CNN (v2)       | Improved version with refined region proposals and better post-processing.  |
+| `thesis-100-samples-best-0-65.ipynb` | GRU + Attention   | Combines a GRU network with attention for sequence labeling.                |
 
