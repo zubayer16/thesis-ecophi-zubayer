@@ -38,6 +38,12 @@ cd power-quality-segmentation_Fault
 
 
 ## 2. 🚀 Run the Pipeline (Recommended)
+Install the dependencies
+```bash
+pip install -r requirements.txt
+pip install -r requirements_viz.txt
+```
+
 To launch the full pipeline (build + run):
 ```bash
 uvicorn run_server:app --reload
