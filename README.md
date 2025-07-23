@@ -60,11 +60,33 @@ uvicorn run_server:app --reload
 ```
 Choose based on your system (e.g., 1 for GPU, 2 for CPU)
 
-## 3. Access the Application
-After successful startup, open your browser at:
+## 3. 🖥️ User Interface Overview
+The frontend of the Power Quality Segmentation Pipeline provides an intuitive, interactive dashboard for exploring model results. It is served via FastAPI and is accessible through your browser at:
 ```bash
 http://localhost:8000
 ```
+![UI Screenshot](images/ui_dashboard.png)
+## 🔧 Configuration Panel (Left Sidebar)
+The configuration panel lets you customize your visualization and analysis:
+
+- Phase Type: Choose between voltage or current data for analysis (e.g., Current, Voltage).
+
+- Phase Number: Select the specific phase (e.g., Phase 1, Phase 2, Phase 3).
+
+- Number of Samples: Enter the number of time series samples to visualize (valid range: 10–500).
+
+- Visualization Type: Select between different visualization modes, such as:
+  - Comparison Dashboard (default)
+  - Single View
+- Generate Visualization: Click this button to update and regenerate the results view with the selected settings.
+
+- Download Results: Export segmentation results and predictions in .csv or .json format.
+
+- Quick Stats:Inference Time: Time taken to segment a single sample.
+
+- Throughput: Number of samples processed per second.
+
+- Device: Indicates whether the CPU or GPU was used for inference.
 
 ## Training Setup Overview
 The training process runs for approximately 10 minutes (CPU), utilizing a GRU (Gated Recurrent Unit) combined with an Attention mechanism. The model is trained sequentially on individual phases of the data, allowing it to capture temporal dependencies and focus on the most relevant parts of the sequence for each phase. The following steps are performed while training
