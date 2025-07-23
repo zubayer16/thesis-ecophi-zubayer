@@ -40,11 +40,14 @@ cd power-quality-segmentation_Fault
 ## 2. 🚀 Run the Pipeline (Recommended)
 To launch the full pipeline (build + run):
 ```bash
-.\docker_build_run.bat
+uvicorn run_server:app --reload
 ```
 
-This script:
+[ALTERNATIVE OPTIONS] For running docker compose and building an image you can run this script:
 
+```bash
+.\docker_build_run.bat
+```
 - Checks Docker/NVIDIA status
 - Creates necessary directories
 - Prompts for running options:
